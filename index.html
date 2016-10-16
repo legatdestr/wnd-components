@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Test</title>
+    <link rel="stylesheet" href="em-feedback.css">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    hello
+
+    <script type="text/javascript" src="em-common.js"></script>
+    <script type="text/javascript" src="em-modal-background.js"></script>
+    <script type="text/javascript" src="em-modal-window.js"></script>
+    <script type="text/javascript" src="em-feedback-form.js"></script>
+
+    <script type="text/javascript" defer>
+        EM.ModalBackground.show();
+        var w = EM.EmWindow.create().open();
+        var fBack = new EM.EmFeedbackForm();
+        w.setContent(fBack.el);
+
+        EM.ajax({
+            url: 'https://er.em70.ru/api/schedule/get?lpu=0001',
+            method: 'GET'
+        }, function() {
+            console.log(arguments);
+        });
+
+
+    </script>
+
+</body>
+
+</html>
