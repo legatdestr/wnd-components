@@ -18,11 +18,6 @@
             n.fire('close-cross-click', e);
             n.EmWindow.close(e.target.wndId);
         },
-        genElId = function() {
-            var min = 1000000,
-                max = 9999999;
-            return 'em-' + ~~(min - 0.5 + g.Math.random() * (max - min + 1));
-        },
         crtdWnds = [];
 
 
@@ -31,7 +26,7 @@
         (this._cfg = n.mixObjs(defaults, {})) && n.isObj(opts) && (n.mixObjs(this._cfg, opts)) &&
             (this._cfg.tplPlHldrs = g.JSON.parse(g.JSON.stringify(this._cfg.tplPlHldrs)));
         this.el = n.d.createElement('div');
-        this.el.id = this.id = genElId();
+        this.el.id = this.id = n.genElId();
         this.el.innerHTML = n.renderTpl(this._cfg.tpl, this._cfg.tplPlHldrs, this._cfg, this._cfg.tplErrorNoPlHldrMsg);
         this._inDom = false;
         crtdWnds.push({
