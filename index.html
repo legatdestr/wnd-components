@@ -20,18 +20,18 @@
 
 
         document.addEventListener('DOMContentLoaded', function(){
-          console.log('statechanged',arguments);
+
           EM.ModalBackground.show();
           var w = EM.EmWindow.create().open();
           var fBack = new EM.EmFeedbackForm();
           w.setContent(fBack.el);
 
-          EM.ajax({
-              url: 'https://er.em70.ru/api/schedule/get?lpu=0001',
-              method: 'GET'
-          }, function() {
-              console.log(arguments);
-          });
+          // EM.ajax({
+          //     url: 'https://er.em70.ru/api/schedule/get?lpu=0001',
+          //     method: 'GET'
+          // }, function() {
+          //     console.log(arguments);
+          // });
         });
 
 

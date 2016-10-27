@@ -38,14 +38,12 @@
             return tgt;
         },
 
-        inherit = n.inherit = function(dst, src){
-          var tobj = {}, x;
-          for (x in src){
-            if ((typeof tObj[x] == 'undefined') || (tObj[x] !== src[x])){
-              dst[x] = src[x];
-            }
-          }
-
+        extendClass = n.extendClass = function(Parent, Child) {
+            var pr = Child.prototype;
+            Child.prototype = Object.create(Parent.prototype);
+            Child.prototype.constructor = Child;
+            mixObjs(pr, Child.prototype);
+            return Child;
         },
 
         error = n.error = function(m) {
@@ -117,8 +115,8 @@
     };
 
     n.fire = function(ch) {
+        console.log(arguments);
         var args = g.Array.prototype.slice.call(arguments, 1);
-        console.log('Event ' + ch, args);
         if (chs[ch]) {
             each(chs[ch], function(args) {
                 return function(k, s) {
@@ -127,6 +125,16 @@
             }(args));
         };
         return this;
+    };
+
+    n.registerWidget = function(name, FConstructor) {
+        // debugger;
+        if (!n.isObj(n.widgets)) {
+            n.widgets = {};
+        }
+        n.widgets[name] = FConstructor;
+
+        console.dir(n.widgets, name, FConstructor);
     };
 
 

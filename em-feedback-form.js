@@ -28,6 +28,10 @@
     };
 
 
+    EmFeedbackForm.prototype.getEL = function() {
+
+    }
+
     n.EmFeedbackForm = EmFeedbackForm; // exports
 
 }(this, typeof EM === 'object' ? EM : this.EM = {}));
