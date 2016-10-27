@@ -1,6 +1,11 @@
 !(function(g, n) {
     "use strict";
 
+    /**
+     *  Модуль который создает форму обратной связи
+     * @module wnd-components-master/em-feedback-form
+     */
+
     var
         defaults = {
             frmClsName: 'em-feedback-form',
@@ -11,6 +16,11 @@
         },
         crtEls = [];
 
+    /**
+     *  Функция которая создает форму обратной связи
+     * @method EmFeedbackForm
+     * @return {EmFeedbackForm}
+     */
 
     function EmFeedbackForm(opts) {
         (this._cfg = n.mixObjs(defaults, {})) && n.isObj(opts) && (n.mixObjs(this._cfg, opts));

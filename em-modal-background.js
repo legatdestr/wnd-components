@@ -1,6 +1,11 @@
 !(function(n) {
     "use strict";
 
+    /**
+     *  Модуль который прячет и показывает задний фон модального окна.
+     * @module wnd-components-master/em-modal-background
+     */
+
     var
         elId = 'em-modal-background',
         getEl = function() {
@@ -17,6 +22,11 @@
             hide(e.target) && n.fire(elId + '-click', e.target);
             return false;
         },
+        /**
+         * Показывает задний фон модального окна
+         * @method show
+         * @return el
+         */
         show = function() {
             var el = getEl();
             el.id = el.id || elId;
