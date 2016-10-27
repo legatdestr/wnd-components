@@ -1,5 +1,11 @@
 !(function(g, n) {
     "use strict";
+
+    /**
+     *  Модуль определенный как библиотека
+     * @module wnd-components-master/em-common
+     */
+
     var
         O = g.Object,
         hasP = n.hasP = O.prototype.hasOwnProperty,

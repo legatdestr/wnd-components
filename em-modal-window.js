@@ -1,6 +1,10 @@
 !(function(g, n) {
     "use strict";
 
+    /**
+     * Модуль который создает модальное окно.
+     * @module wnd-components-master/em-modal-window
+     */
     var
         defaults = {
             wndClsName: 'em-modal-window',
@@ -20,7 +24,11 @@
         },
         crtdWnds = [];
 
-
+    /**
+     * Create an EmWindow
+     * @class create
+     * @return {EmWindow} this
+     */
     function EmWindow(opts) {
         var closeBt;
         (this._cfg = n.mixObjs(defaults, {})) && n.isObj(opts) && (n.mixObjs(this._cfg, opts)) &&
@@ -39,6 +47,11 @@
         return this;
     };
 
+    /**
+     * Open current instance of the EmWindow
+     * @method open
+     * @return {EmWindow} this
+     */
     EmWindow.prototype.open = function() {
         this.el.className = this._cfg.wndClsName;
         if (!this._inDom) {
@@ -69,16 +82,24 @@
         return this.el.getElementsByClassName(this._cfg.wndBodyContentClsName)[0];
     };
 
+    /**
+     * Content for an instance of EmWindow
+     * @method setContent
+     * @return
+     */
     EmWindow.prototype.setContent = function(c) {
         var b1 = this.getContent(),
             cloneDeep = false,
             b2 = b1.cloneNode(cloneDeep),
             p;
-        (typeof (c) === 'object' && b2.appendChild(c)) || (b2.innerHTML = c);
+        (typeof(c) === 'object' && b2.appendChild(c)) || (b2.innerHTML = c);
         (p = b1.parentNode) && p.removeChild(b1) && p.appendChild(b2);
         return b2;
     };
 
+    /**
+     * Событие/функция которая записывать закрываемое окно в массив данных
+     */
     n.on('window-closed', function(w) { // prevents memory leaks
         var nWds = [];
         n.each(crtdWnds, function(k, v) {
