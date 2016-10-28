@@ -2,76 +2,40 @@
 <html lang="ru">
 
 <head>
-    <title>Test</title>
+    <title>Widget components</title>
     <link rel="stylesheet" href="em-feedback.css">
     <meta charset="utf-8">
 </head>
 
 <body>
-
-    <div id="el">
-        elelelelelelelelelelelelelel
-    </div>
-
-    <div id="window">
-        window window window window window window window window
-    </div>
-
-
+    <h1>Widget components by Kochetkov S.B.</h1>
+    <div id="widget">Widget-content</div>
+    <div id="window">Window-content</div>
+    <!-- All scripts could be minimized later -->
     <script type="text/javascript" src="em-common.js"></script>
-    <script type="text/javascript" src="archan937-templayed.js">
-        //templater
-    </script>
+    <script type="text/javascript" src="archan937-templayed.js"></script>
     <script type="text/javascript" src="em-modal-background.js"></script>
     <script type="text/javascript" src="em-widget.js"></script>
     <script type="text/javascript" src="em-window.js"></script>
-
-
     <script type="text/javascript">
+        // usage example
         document.addEventListener('DOMContentLoaded', function() {
             EM.ModalBackground.show();
-            var widget = new EM.widgets.Widget({
-                el: document.getElementById('el')
-            }).run();
-            console.log(widget);
-
-            console.log('EM.widgets', EM.widgets);
-
             var
+                widget = new EM.widgets.Widget({
+                    el: document.getElementById('widget'),
+                    name: 'widget'
+                }),
                 emWindow = new EM.widgets.Window({
-                    el: document.getElementById('window')
-                })
-                .run()
-                .render();
+                    el: document.getElementById('window'),
+                    name: 'widget-window'
+                });
 
-
-            //var wnd = new EM.
-
-
-            // template = "<ul>{{#names}}<li>{{../fullName}}</li>{{/names}}</ul>",
-            //     variables = {
-            //         names: [{
-            //             firstName: "Paul",
-            //             lastName: "Engel"
-            //         }, {
-            //             firstName: "Chunk",
-            //             lastName: "Norris"
-            //         }],
-            //         fullName: function() {
-            //             return this.lastName + ", " + this.firstName;
-            //         }
-            //     };
-            // console.log(EM.template(template)(variables)); //=> "<ul><li>Engel, Paul</li><li>Norris, Chunk</li></ul>";
-
+            widget.run();
+            emWindow.run().render();
 
         });
     </script>
-
-
-
-
-
-
 
 </body>
 

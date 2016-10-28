@@ -4,9 +4,9 @@
     var
         defPars = {
             hndlrs: {
-              onclosecross_click: function(ctxt){
-                console.log(ctxt);
-              }
+                onclosecross_click: function(ctxt) {
+                    console.log(ctxt);
+                }
             },
             // default window template
             tpl: '<div id="{{id}}" class="{{className}}">' +
@@ -57,9 +57,8 @@
         return this;
     }
 
-    Window.prototype.render = function() {
-        var tmpl = n.template(this._cfg.tpl)(this._cfg.viewModel);
-        this.setHtml(tmpl);
+    Window.prototype.render = function(viewModel) {
+        return this.setHtml(n.template(this._cfg.tpl)(viewModel || this._cfg.viewModel));
     }
 
     //  exports

@@ -4,7 +4,7 @@
     var
         defPars = {
             el: null,
-            name: '',
+            name: null,
             hndlrs: {
                 onClick: function(e) {
                     var elClass = e.target.getAttribute('class'),
@@ -43,6 +43,7 @@
         this._hndlrs = this._hndlrs || null;
         this._name = this._name || null;
         this.setOptions(opts);
+        n.isObj(opts) && n.isStr(opts.name) && this.setName(opts.name) || (this.setName(n.genElId() + '-widget'));
         return this;
     }
 
@@ -57,7 +58,6 @@
         (!n.isObj(opts)) && (opts = {});
         (!n.isObj(this._cfg)) && (this._cfg = n.mixObjs(defPars, {}));
         this._cfg = n.mixObjs(opts, this._cfg);
-        opts && (typeof opts.name !== 'undefined') && this.setName(opts.name);
         return this;
     };
 
@@ -80,18 +80,20 @@
     Widget.prototype.run = function() {
         bindHndlrs(this, this._cfg.hndlrs);
         this.getEl().addEventListener('click', this._hndlrs.onClick);
+        n.fire(this.getName() + '_run', this);
         return this;
     };
 
     Widget.prototype.stop = function() {
         this.getEl().removeEventListener('click', this._hndlrs.onClick);
         unbindHndlrs(this, this._cfg.hndlrs);
+        n.fire(this.getName() + '_stop', this);
         return this;
     };
 
     Widget.prototype.setName = function(name) {
-        (!n.isStr(name)) && n.error('name is not set');
-        this._name = this._cfg.name || n.genElId() + '-widget';
+        (!n.isStr(name)) && n.error('name is not set') ||
+            (this._name = (name || this._cfg.name));
         return this;
     }
 
@@ -101,6 +103,7 @@
 
     Widget.prototype.setHtml = function(html) {
         this.getEl().innerHTML = html;
+        n.fire(this.getName() + '_html_changed', this);
         return this;
     }
 
