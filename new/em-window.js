@@ -4,7 +4,9 @@
     var
         defPars = {
             hndlrs: {
-
+              onclosecross_click: function(ctxt){
+                console.log(ctxt);
+              }
             },
             //  tpl: '<div class="modal-header"><button class="{{btnCloseClsName}}" >{{btnCloseTitle}}</button><h3 class="modal-title">{{wndTitle}}</h3></div><div class="{{wndBodyContentClsName}}">{{wndBodyContent}}</div>'
             //,

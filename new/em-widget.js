@@ -7,17 +7,19 @@
             name: '',
             hndlrs: {
                 onClick: function(e) {
-                    var elClass = e.target.getAttribute('class'), hndlrName = null, ctxt = null;
-                    split = g.String.prototype.split;
+                    var elClass = e.target.getAttribute('class'),
+                        hndlrName = null,
+                        ctxt = null,
+                        split = g.String.prototype.split;
                     elClass && (elClass = split.call(elClass, ' ')[0]);
-                    elClass && (hndlrName = g.Array.prototype.join.call(split.call(elClass, '-'), '' );
+                    elClass && (hndlrName = 'on' + g.Array.prototype.join.call(split.call(elClass, '-'), '') + '_click');
                     ctxt = {
                         widget: this,
                         el: e.target,
                         elClass: elClass
                     };
                     n.fire(this.getName() + '_click', ctxt);
-                    n.isF(this.hndlrs[hndlrName] && n.isF(this.hndlrs[hndlrName](ctxt);
+                    n.isF(this._hndlrs[hndlrName]) && this._hndlrs[hndlrName](ctxt);
                 }
             }
         },
@@ -41,7 +43,6 @@
         this._hndlrs = this._hndlrs || null;
         this._name = this._name || null;
         this.setOptions(opts);
-        opts && (typeof opts.name !== 'undefined') && this.setName(opts.name);
         return this;
     }
 
@@ -53,10 +54,10 @@
      * @param  {Object}   opts
      */
     Widget.prototype.setOptions = function(opts) {
-        (!n.isObj(this._cfg)) && (this._cfg = {});
-        (!n.isObj(opts)) && n.error('opts are empty. It should be an object type');
-        var cfg = n.mixObjs(defPars, opts);
-        this._cfg = n.mixObjs(cfg, this._cfg);
+        (!n.isObj(opts)) && (opts = {});
+        (!n.isObj(this._cfg)) && (this._cfg = n.mixObjs(defPars, {}));
+        this._cfg = n.mixObjs(opts, this._cfg);
+        opts && (typeof opts.name !== 'undefined') && this.setName(opts.name);
         return this;
     };
 
