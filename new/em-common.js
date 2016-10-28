@@ -32,17 +32,10 @@
             return o;
         },
         mixObjs = n.mixObjs = function(src, tgt) {
-            // each(src, function(k, v) {
-            //     return (typeof tgt[k] === 'undefined') && (tgt[k] = v);
-            // });
-            if (!isObj(src) || !isObj(tgt)) {
-                throw new Error('src, tgt are not instances of Object');
-            };
-
+            (!isObj(src) || !isObj(tgt)) && n.error('src, tgt must be the Object');
             each(src, function(propName, propVal) {
-                if (!tgt[propName]) {
-                    tgt[propName] = propVal; // копирование ссылки если объект. самая простая ситуация
-                } else { // свойство в целевом объекте уже есть
+                if (!((!tgt[propName]) && (tgt[propName] = propVal))) {
+                    // свойство в целевом объекте уже есть
                     if (!isObj(tgt[propName])) { // перезапись всех не Object и создание ссылки на Object
                         tgt[propName] = propVal;
                     } else {
