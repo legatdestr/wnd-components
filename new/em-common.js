@@ -35,27 +35,20 @@
             (!isObj(src) || !isObj(tgt)) && n.error('src, tgt must be the Object');
             each(src, function(propName, propVal) {
                 if (!((!tgt[propName]) && (tgt[propName] = propVal))) {
-                    // свойство в целевом объекте уже есть
                     if (!isObj(tgt[propName])) { // перезапись всех не Object и создание ссылки на Object
                         tgt[propName] = propVal;
                     } else {
-                        // свойство в целевом есть и оно объект типа Object
-                        // проверить что в исходном объекте свойство тоже объект иначе ошибка
-                        if (!isObj(propVal)) {
-                            throw new Error('В исходном и целевом объектах, свойства с одинаковым именем но не объекты.');
-                        } else {
+                        if (!((!isObj(propVal)) && (n.error('В исходном и целевом объектах, не должны быть свойства с одинаковым именем но не объекты.')))) {
                             tgt[propName] = mixObjs(propVal, tgt[propName]); // рекурсивный вызов
                         }
                     }
                 }
             });
-
             return tgt;
         },
 
         extendClass = n.extendClass = function(Parent, Child) {
-            var pr = Child.prototype,
-                it;
+            var it, pr = Child.prototype;
             Child.prototype = Object.create(Parent.prototype);
             Child.prototype.constructor = Child;
             for (it in pr)(typeof Child.prototype[it] === 'undefined') && (Child.prototype[it] = pr[it]);

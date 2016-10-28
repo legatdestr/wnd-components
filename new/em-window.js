@@ -8,9 +8,7 @@
                 console.log(ctxt);
               }
             },
-            //  tpl: '<div class="modal-header"><button class="{{btnCloseClsName}}" >{{btnCloseTitle}}</button><h3 class="modal-title">{{wndTitle}}</h3></div><div class="{{wndBodyContentClsName}}">{{wndBodyContent}}</div>'
-            //,
-            //
+            // default window template
             tpl: '<div id="{{id}}" class="{{className}}">' +
                 '<div class="{{header.class}}">' +
                 '<button class="{{header.closeBtnClass}}">{{header.closeBtnTitle}}</button>' +
