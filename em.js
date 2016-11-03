@@ -2,6 +2,7 @@
     "use strict";
     var
         O = g.Object,
+        debug = n.debug = true,
         hasP = n.hasP = O.prototype.hasOwnProperty,
         toString = O.prototype.toString,
         d = n.d = g.document,
@@ -75,7 +76,7 @@
         },
 
         error = n.error = function(m) {
-            console && isF(console.warn) && console.warn(m);
+            console && isF(console.warn) && console.warn(m, arguments);
             throw new g.Error(m);
         },
 
