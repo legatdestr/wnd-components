@@ -18,7 +18,7 @@
         isStr = n.isStr = function(e) {
             return toString.call(e) === '[object String]';
         },
-        isNum = function (e) {
+        isNum = function(e) {
             return (typeof entity === 'undefined') ? false : !isNaN(e);
         },
         each = n.each = function(o, c) {
@@ -47,6 +47,23 @@
                 }
             });
             return tgt;
+        },
+
+        /**
+         * Get type of the entity
+         * getType(); //undefined
+         * getType(null); //null
+         * getType(NaN); //number
+         * getType(5); //number
+         * getType({}); //object
+         * getType([]); //array
+         * getType(''); //string
+         * getType(function () {}); //function
+         * getType(/a/) //regexp
+         * getType(new Date()) //date
+         */
+        getType = n.getType = function(e) {
+          return toString.call(e).split(' ')[1].slice(0, -1).toLowerCase();
         },
 
         extendClass = n.extendClass = function(Parent, Child) {
@@ -116,11 +133,11 @@
             return t;
         };
 
-    n.registerWidget = function(name, FConstructor) {
+    n.registerWidget = function(name, definition) {
         if (!n.isObj(n.widgets)) {
             n.widgets = {};
         }
-        n.widgets[name] = FConstructor;
+        n.widgets[name] = definition;
     };
 
 

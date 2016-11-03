@@ -41,7 +41,7 @@
             this._hndlrs = this._hndlrs || null;
             this._name = this._name || null;
             (this.events = {}) && observer(this.events);
-            this.setOptions(opts);
+          //  this.setOptions(opts);
             return this;
         }
 

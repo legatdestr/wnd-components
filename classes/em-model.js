@@ -6,6 +6,37 @@
      */
     var
         observer = n.Utils.observer,
+        isValueValid = function(entity, value, props) {
+            var valid = false;
+            var v = n.isObj(props)? props[entity]: props,
+                vType = n.getType(v);
+            switch (vType) {
+                case 'undefined':
+                    valid = false;
+                    break;
+                case 'null':
+                    valid = false;
+                    break;
+                case 'number':
+                    valid = n.isNum(value);
+                    break;
+                case 'object':
+                    valid = n.isObj(value);
+                    break;
+                case 'array':
+                    //   empty - validator should be type of Array
+                    //   non empty - валидатор либо пустой массив, либо массив с валидаторами - логика или
+                    if (vType.length){
+                      valid = isValueValid(entity, value, vType[0]);
+                    }
+                    valid = n.isArr(value);
+                    break;
+                default:
+                    break;
+            }
+
+            return valid;
+        },
         methods = {
             is: function(prop) {
                 return typeof this._propsAvailable[prop] !== 'undefined';
@@ -18,6 +49,7 @@
             set: function(entity, value, silent) {
                 (!n.isStr(entity)) && n.error('property name should be type of String');
                 (!this.is(entity)) && n.error('property is not exists: ' + entity);
+                (!isValueValid(entity, value, this._propsAvailable)) && n.error('value has no valid type: ' + entity);
                 this._props[entity] = value;
                 (!!!silent) && this.events.fire('model_update', this);
                 return this;
@@ -44,6 +76,23 @@
             toJson: function() {
                 return g.JSON.stringify(this.getValues());
             }
+        },
+
+        setupModelAvailableProps = function(Model, props) {
+            props && (!n.isObj(props)) && n.error('Model properties should be type of "Object" with types');
+            Model.prototype._propsAvailable = props;
+            return Model;
+        },
+
+        setupModelMethods = function(Model) {
+            n.each(methods, function(k, v) {
+                Model.prototype[k] = v;
+            });
+            Model.prototype._propsAvailable.methods && n.each(Model.prototype._propsAvailable.methods, function(k, v) {
+                n.isF(v) && (Model.prototype[k] = v);
+            });
+            Model.prototype._propsAvailable.methods && delete Model.prototype._propsAvailable.methods;
+            return Model;
         };
 
     /**
@@ -52,7 +101,6 @@
      * @param  {Object} props model definition
      */
     n.Model = function(props) {
-        props && (!n.isObj(props)) && n.error('Model properties should be type of "Object" with default values');
 
         function Model(values) {
             (this.events = {}) && observer(this.events);
@@ -60,15 +108,10 @@
             values && this.setValues(values);
             return this;
         }
-        n.each(methods, function(k, v) {
-            Model.prototype[k] = v;
-        });
 
-        Model.prototype._propsAvailable = props;
-        Model.prototype._propsAvailable.methods && n.each(Model.prototype._propsAvailable.methods, function(k, v) {
-            n.isF(v) && (Model.prototype[k] = v);
-        });
-        Model.prototype._propsAvailable.methods && delete Model.prototype._propsAvailable.methods;
+        setupModelAvailableProps(Model, props);
+        setupModelMethods(Model);
+
         return Model;
     };
 
