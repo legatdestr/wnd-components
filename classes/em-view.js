@@ -5,47 +5,61 @@
     // 2 - DOM Manipulation = View
     // 3 - AJAX calls = Model
 
+
     var
         observer = n.Utils.observer,
-        defPars = {
-            el: null,
-            name: null,
-            hndlrs: {
-                onClick: function(e) {
-                    var elClass = e.target.getAttribute('class'),
-                        hndlrName = null,
-                        ctxt = null,
-                        split = g.String.prototype.split;
-                    elClass && (elClass = split.call(elClass, ' ')[0]);
-                    elClass && (hndlrName = 'on' + g.Array.prototype.join.call(split.call(elClass, '-'), '') + '_click');
-                    ctxt = {
-                        widget: this,
-                        el: e.target,
-                        elClass: elClass
-                    };
-                    n.isF(this._hndlrs[hndlrName]) && this._hndlrs[hndlrName](ctxt);
-                    this.events.fire(elClass + '_click', ctxt);
-                }
+        superMethods = {
+            setEl: function(el) {
+                this._el = el;
+                return this;
+            },
+            getEl: function() {
+                return this._el;
+            },
+            setOpts: function(opts, silent) {
+                var self = this,
+                    mName;
+                silent = !!silent;
+                opts = n.isObj(opts) ? opts : {};
+                n.each(opts, function(k, v) {
+                    mName = 'set' + k.charAt(0).toUpperCase() + k.slice(1);
+                    (n.isF(self[mName]) && self[mName].call(self, v, silent));
+                });
+                return this;
+            },
+            getOpts: function() {
+                var opts = {},
+                    key;
+                each(this, function(k, v) {
+                    if (!n.isF(v)) {
+                        key = g.String.prototype.split.call(k, '_').join('');
+                        opts[key] = v;
+                    }
+                });
+                return opts;
+            },
+            toJson: function() {
+                return g.JSON.stringify(this.getOpts());
+            },
+            toString: function() {
+                return this.toJson();
             }
-        },
-        methods = {
-            render: function() {
-                console.log('render');
-            }
-
         };
 
-    n.View = function() {
+    // Factory
+    n.View = function(extMethods) {
         function View(opts) {
-            this._cfg = this._cfg || null;
-            this._hndlrs = this._hndlrs || null;
-            this._name = this._name || null;
-            (this.events = {}) && observer(this.events);
-          //  this.setOptions(opts);
+            this._el = null;
+            this.setOpts(opts);
             return this;
         }
 
-        n.each(methods, function(k, v) {
+        n.each(superMethods, function(k, v) {
+            View.prototype[k] = v;
+        });
+
+        extMethods = n.isObj(extMethods) ? extMethods : {};
+        n.each(extMethods, function(k, v) {
             View.prototype[k] = v;
         });
 

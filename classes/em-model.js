@@ -7,9 +7,11 @@
     var
         observer = n.Utils.observer,
         isValueValid = function(entity, value, props) {
-            var valid = false;
-            var v = n.isObj(props)? props[entity]: props,
-                vType = n.getType(v);
+            var
+                valid = false,
+                v = n.isObj(props) ? props[entity] : props,
+                vType = n.getType(v),
+                l;
             switch (vType) {
                 case 'undefined':
                     valid = false;
@@ -24,12 +26,16 @@
                     valid = n.isObj(value);
                     break;
                 case 'array':
-                    //   empty - validator should be type of Array
-                    //   non empty - валидатор либо пустой массив, либо массив с валидаторами - логика или
-                    if (vType.length){
-                      valid = isValueValid(entity, value, vType[0]);
+                    //   empty - validator should have type of Array
+                    //   non empty - array of validators
+                    if (l = vType.length) {
+                        valid = true;
+                        while (l--) {
+                            valid = valid && isValueValid(entity, value, vType[l]);
+                        }
+                    } else {
+                        valid = n.isArr(value); // валидатор - массив
                     }
-                    valid = n.isArr(value);
                     break;
                 default:
                     break;
