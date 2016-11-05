@@ -1,4 +1,4 @@
-!(function(g, n, u) {
+!(function (g, n, u) {
     "use strict";
 
     /**
@@ -8,7 +8,7 @@
      * @param strict
      * @returns {boolean}
      */
-    u.inArray = function(needle, haystack) {
+    u.inArray = function (needle, haystack) {
         var length = haystack.length;
         for (var i = 0; i < length; i++) {
             /* jshint eqeqeq: false, curly: false */

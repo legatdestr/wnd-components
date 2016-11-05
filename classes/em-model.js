@@ -1,4 +1,4 @@
-!(function(g, n) {
+!(function (g, n) {
     "use strict";
 
     /**
@@ -6,7 +6,7 @@
      */
     var
         observer = n.Utils.observer,
-        isValueValid = function(entity, value, props) {
+        isValueValid = function (entity, value, props) {
             var
                 valid = false,
                 v = n.isObj(props) ? props[entity] : props,
@@ -44,15 +44,15 @@
             return valid;
         },
         methods = {
-            is: function(prop) {
+            is: function (prop) {
                 return typeof this._propsAvailable[prop] !== 'undefined';
             },
-            get: function(entity) {
+            get: function (entity) {
                 n.Utils.isEmpty(entity) && n.error('no entity name');
                 (!this.is(entity)) && n.error('There is no property with given name: ' + entity);
                 return this._props[entity] || this._propsAvailable[entity];
             },
-            set: function(entity, value, silent) {
+            set: function (entity, value, silent) {
                 (!n.isStr(entity)) && n.error('property name should be type of String');
                 (!this.is(entity)) && n.error('property is not exists: ' + entity);
                 (!isValueValid(entity, value, this._propsAvailable)) && n.error('value has no valid type: ' + entity);
@@ -65,39 +65,39 @@
              * @method getValues
              * @return {Object} COPY of the Model properties
              */
-            getValues: function() {
+            getValues: function () {
                 return g.JSON.parse(g.JSON.stringify(this._props));
             },
-            setValues: function(vals, silent) {
+            setValues: function (vals, silent) {
                 var self = this;
                 (!n.isObj(vals)) && n.error('values should be type of "Object"');
-                n.each(vals, function(k, v) {
+                n.each(vals, function (k, v) {
                     self.set(k, v, silent);
                 });
                 return this;
             },
-            toString: function() {
+            toString: function () {
                 return this.toJson();
             },
-            toJson: function() {
+            toJson: function () {
                 return g.JSON.stringify(this.getValues());
             }
         },
 
-        setupModelAvailableProps = function(Model, props) {
+        setupModelAvailableProps = function (Model, props) {
             props && (!n.isObj(props)) && n.error('Model properties should be type of "Object" with types');
             Model.prototype._propsAvailable = props;
             return Model;
         },
 
-        setupModelMethods = function(Model) {
-            n.each(methods, function(k, v) {
+        setupModelMethods = function (Model) {
+            n.each(methods, function (k, v) {
                 Model.prototype[k] = v;
             });
-            Model.prototype._propsAvailable.methods && n.each(Model.prototype._propsAvailable.methods, function(k, v) {
+            Model.prototype._propsAvailable.methods && n.each(Model.prototype._propsAvailable.methods, function (k, v) {
                 n.isF(v) && (Model.prototype[k] = v);
             });
-            Model.prototype._propsAvailable.methods && delete Model.prototype._propsAvailable.methods;
+            Model.prototype._propsAvailable.methods && delete Model.prototype._propsAvailable['methods'];
             return Model;
         };
 
@@ -106,7 +106,7 @@
      * @method Model constructor.
      * @param  {Object} props model definition
      */
-    n.Model = function(props) {
+    n.Model = function (props) {
 
         function Model(values) {
             (this.events = {}) && observer(this.events);

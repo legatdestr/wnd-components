@@ -1,8 +1,8 @@
-!(function(g, n, u) {
+!(function (g, n, u) {
     "use strict";
 
     var
-        Observer = function() {
+        Observer = function () {
             "use strict";
             var
                 publisher = {
@@ -10,7 +10,7 @@
                         any: []
                     },
 
-                    on: function(type, fn, context, once) {
+                    on: function (type, fn, context, once) {
                         type = type || 'any';
                         fn = typeof fn === "function" ? fn : context[fn];
 
@@ -34,10 +34,10 @@
                             once: !!once
                         });
                     },
-                    once: function(type, fn, context) {
+                    once: function (type, fn, context) {
                         this.on(type, fn, context, true);
                     },
-                    remove: function(type, fn, context) {
+                    remove: function (type, fn, context) {
                         this.fireSubscribers('unsubscribe', type, fn, context);
                     },
                     /**
@@ -46,12 +46,12 @@
                      * @param {Object} publication
                      * @param {Boolean} async If true then event will be invoked asynchronously. True by default
                      */
-                    fire: function(type, publication, async) {
+                    fire: function (type, publication, async) {
                         var self = this;
                         async = !!async;
                         if (async) {
-                            setTimeout(function(t, p) {
-                                return function() {
+                            setTimeout(function (t, p) {
+                                return function () {
                                     self.fireSubscribers('publish', t, p);
                                 };
 
@@ -60,7 +60,7 @@
                             this.fireSubscribers('publish', type, publication);
                         }
                     },
-                    fireSubscribers: function(action, type, arg, context) {
+                    fireSubscribers: function (action, type, arg, context) {
                         this._eveEnabled = this._eveEnabled || true;
                         this._logEvents = this._logEvents || false;
                         if (!this._eveEnabled) {
@@ -94,25 +94,25 @@
                             }
                         }
                     },
-                    removeAllEventHandlers: function(type) {
+                    removeAllEventHandlers: function (type) {
                         var subscribers = this.subscribers[type];
                         if (Object.prototype.toString.call(subscribers) !== '[object Array]') {
                             return;
                         }
                         this.subscribers[type] = [];
                     },
-                    clear: function() {
+                    clear: function () {
                         this.subscribers = {
                             any: []
                         };
                     },
-                    pause: function() {
+                    pause: function () {
                         this._eveEnabled = false;
                     },
-                    resume: function() {
+                    resume: function () {
                         this._eveEnabled = true;
                     },
-                    log: function(enabled) {
+                    log: function (enabled) {
                         enabled = enabled || false;
                         this._logEvents = enabled;
                     }
@@ -137,5 +137,5 @@
 
     u.observer = Observer;
 
-  }(this, typeof EM === 'object' ? EM : this.EM = {},
-      typeof EM.Utils === 'object' ? EM.Utils : this.EM.Utils = {}));
+}(this, typeof EM === 'object' ? EM : this.EM = {},
+    typeof EM.Utils === 'object' ? EM.Utils : this.EM.Utils = {}));

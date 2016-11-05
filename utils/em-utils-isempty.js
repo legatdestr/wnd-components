@@ -1,7 +1,7 @@
-!(function(g, n, u) {
+!(function (g, n, u) {
     "use strict";
 
-    u.isEmpty = function(e) {
+    u.isEmpty = function (e) {
         if (typeof e === 'undefined') {
             return true;
         }

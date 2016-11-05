@@ -1,6 +1,6 @@
 // template
 
-!(function(g, n, u) {
+!(function (g, n, u) {
     "use strict";
 
     /**
@@ -19,11 +19,11 @@
      * // };
      * // templayed(template)(variables); //=> "<ul><li>Engel, Paul</li><li>Norris, Chunk</li></ul>";
      */
-    var templayed = u.template = function(template, vars) {
+    var templayed = u.template = function (template, vars) {
 
-        var get = function(path, i) {
+        var get = function (path, i) {
                 i = 1;
-                path = path.replace(/\.\.\//g, function() {
+                path = path.replace(/\.\.\//g, function () {
                     i++;
                     return '';
                 });
@@ -32,11 +32,12 @@
                     j = 0;
                 for (j; j < keys.length; j++) {
                     js.push('.' + keys[j]);
-                };
+                }
+                ;
                 return js.join('');
             },
-            tag = function(template) {
-                return template.replace(/\{\{(!|&|\{)?\s*(.*?)\s*}}+/g, function(match, operator, context) {
+            tag = function (template) {
+                return template.replace(/\{\{(!|&|\{)?\s*(.*?)\s*}}+/g, function (match, operator, context) {
                     if (operator == "!") return '';
                     var i = inc++;
                     return ['"; var o', i, ' = ', get(context), ', s', i, ' = typeof(o', i, ') == "function" ? o', i, '.call(vars[vars.length - 1]) : o', i, '; s', i, ' = ( s', i, ' || s', i, ' == 0 ? s', i, ': "") + ""; s += ',
@@ -44,8 +45,8 @@
                     ].join('');
                 });
             },
-            block = function(template) {
-                return tag(template.replace(/\{\{(\^|#)(.*?)}}(.*?)\{\{\/\2}}/g, function(match, operator, key, context) {
+            block = function (template) {
+                return tag(template.replace(/\{\{(\^|#)(.*?)}}(.*?)\{\{\/\2}}/g, function (match, operator, key, context) {
                     var i = inc++;
                     return ['"; var o', i, ' = ', get(key), '; ',
                         (operator == "^" ? ['if ((o', i, ' instanceof Array) ? !o', i, '.length : !o', i, ') { s += "', block(context), '"; } '] : ['if (typeof(o', i, ') == "boolean" && o', i, ') { s += "', block(context), '"; } else if (o', i, ') { for (var i', i, ' = 0; i', i, ' < o',
